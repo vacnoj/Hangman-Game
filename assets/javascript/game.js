@@ -29,6 +29,7 @@ do {
 
 	// get a word from library
 	getWord(wordsArray, word);
+	// alert(word);
 	alert(wordLettersArrayUI.join(" "));
 
 	do {
@@ -65,7 +66,7 @@ do {
 			console.log("yay");
 			console.log(wordLettersArray);
 			console.log(alreadyGuessedLettersArray);
-			alert(wordLettersArrayUI.join(" "));
+			alert(wordLettersArrayUI.join("  "));
 			if (youWin(wordLettersArray)) {
 				alert("You Win!");
 				break;
@@ -75,9 +76,11 @@ do {
 		} else {	
 			alert("wrong");
 			lives -= 1;
-			alert(lives);
+			alert(`${lives} lives left!`);
+			alert(wordLettersArrayUI.join("  "));
 			if (lives === 0) {
 				alert("Loser!");
+				alert(word);
 				break;
 			}
 		} 
@@ -155,7 +158,7 @@ function playAnother() {
 }
 
 // function that will get another word from the array
-function getWord(wordsArray, word) {
+function getWord(wordsArray) {
 	wordsArray = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the 4th", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"]
 	word = wordsArray[Math.floor(Math.random()*16)]; 
 	//lower case the word
@@ -175,7 +178,7 @@ function getWord(wordsArray, word) {
 
 	// // takes away the commas
 	// wordLettersArrayUI.join("*");
-	return word;
+	return wordLettersArray;
 }
 
 
