@@ -51,7 +51,7 @@ do {
 			console.log("yay");
 			console.log(wordLettersArray);
 			console.log(alreadyGuessedLettersArray);
-			console.log(wordLettersArrayUI);
+			alert(wordLettersArrayUI.join(" "));
 			if (youWin(wordLettersArray)) {
 				alert("You Win!");
 				break;
@@ -70,7 +70,7 @@ do {
 	} while (lives > 0);
 	alreadyGuessedLettersArray = [];
 	lives = 3;
-
+	wordLettersArray = [];
 } while (playAnother() === true);
 
 
@@ -159,8 +159,8 @@ function getWord(wordsArray, word) {
 	// fills each spot with a blank spot so the user knows how many letters to guess!
 	wordLettersArrayUI.fill("__");
 
-	// takes away the commas
-	wordLettersArrayUI.join(" ");
+	// // takes away the commas
+	// wordLettersArrayUI.join("*");
 	return word;
 }
 
