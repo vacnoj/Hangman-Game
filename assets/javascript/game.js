@@ -32,9 +32,11 @@ do {
 
 	do {
 		
-		//ask user to guess again 
+		alert(wordLettersArrayUI.join(" "));
+		//ask user to guess 
 		guessedLetter = prompt("Guess a letter!");
 		guessedLetter = guessedLetter.toLowerCase();
+
 
 		// document.getElementById("guessedLetter");
 		// document.onkeyup = function(event) {
