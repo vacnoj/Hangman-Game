@@ -144,7 +144,7 @@ function playAnother() {
 
 // function that will get another word from the array
 function getWord(wordsArray, word) {
-	wordsArray = ["random", "words", "That", "I", "Use", "to", "Test", "everything", "a", "bunch", "of", "times", "to", "Check ", "for", "bugs"]
+	wordsArray = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the 4th", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"]
 	word = wordsArray[Math.floor(Math.random()*16)]; 
 	//lower case the word
 	word = word.toLowerCase();
