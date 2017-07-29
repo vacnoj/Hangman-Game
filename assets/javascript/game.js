@@ -2,28 +2,6 @@ console.log('hi');
 
 livesUI = document.getElementById("lives");
 
-// returns true or false if guessedLetter is in wordLetter
-function containsLetter(guessedLetter, wordLetter) {
-	for (var i = 0; i < wordLetter.length; i++) {
-		if (wordLetter[i] === guessedLetter) {
-				return true;
-			}	
-	} return false;
-
-}
-
-//Are you ready?
-//var isReady = confirm("Are you ready?");
-
-// // if ready
-// if (isReady) {
-
-// //else 
-// } else ();
-
-// variable for letters
-var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-
 // set a life variable
 var lives = 3;
 
@@ -32,50 +10,161 @@ livesUI.innerHTML = lives;
 // print number of lives
 console.log(`You have ${lives} left!`);
 
+//initialize the array of words
+var wordsArray;
+
 // initialize word variable
-var word = "random";
+var word;
 
-// initialize wordLetter array and set to length of word
-var wordLetter = [word.length];
+// initialize wordLettersArray array
+var wordLettersArray = [];
 
-//lower case the word
-word = word.toLowerCase();
+// an array of already guessed letters
+var alreadyGuessedLettersArray = [];
 
-//break up word into letters
-for (var i = 0; i < word.length; i++) {
-	wordLetter[i] = word.charAt(i); 
-	console.log(wordLetter);
-}	
+// array that shows user what letters they got right
+var wordLettersArrayUI = [];
 
-//guessedLetter = the letter that is typed in
-// guessedLetter = prompt("Guess a letter!");
-
-	
 do {
-	
-	//ask user to guess again
-	guessedLetter = prompt("Guess a letter!"); 
 
-	// document.getElementById("guessedLetter");
-	// document.onkeyup = function(event) {
-	// 	guessedLetter = event.key;
-	// };
+	// get a word from library
+	getWord(wordsArray, word);
 
-	// if you guess right!
-	if (containsLetter(guessedLetter, wordLetter)) {
-		console.log("yay");
-		//wordLetter.remove(guessedLetter);
-		console.log(wordLetter);
+	do {
+		
+		//ask user to guess again 
+		guessedLetter = prompt("Guess a letter!");
+		guessedLetter = guessedLetter.toLowerCase();
 
-	// if you guess wrong
-	} else {	
-		console.log("wrong");
-		lives--;
-		console.log(lives);
-		if (lives === 0) {
-			break;
+		// document.getElementById("guessedLetter");
+		// document.onkeyup = function(event) {
+		// 	guessedLetter = event.key;
+		// };
+
+		while (alreadyGuessed(alreadyGuessedLettersArray, guessedLetter)) {
+			alert(`You already guessed ${guessedLetter}!`);
+			guessedLetter = prompt("Guess a letter!");
 		}
-	} 
-} while (lives > 0);
+
+		// if you guess right!
+		if (containsLetter(guessedLetter, wordLettersArray)) {
+			console.log("yay");
+			console.log(wordLettersArray);
+			console.log(alreadyGuessedLettersArray);
+			console.log(wordLettersArrayUI);
+			if (youWin(wordLettersArray)) {
+				alert("You Win!");
+				break;
+			}
+
+		// if you guess wrong
+		} else {	
+			alert("wrong");
+			lives -= 1;
+			alert(lives);
+			if (lives === 0) {
+				alert("Loser!");
+				break;
+			}
+		} 
+	} while (lives > 0);
+	alreadyGuessedLettersArray = [];
+	lives = 3;
+
+} while (playAnother() === true);
+
+
+// returns true or false if guessedLetter is in wordLettersArray
+function containsLetter(guessedLetter, wordLettersArray) {
+	for (var i = 0; i < wordLettersArray.length; i++) {
+		// if the letter is in the word
+		if (wordLettersArray[i] === guessedLetter) {
+			// run makeAlreadyGuessedArray
+			makeAlreadyGuessedArray(guessedLetter, wordLettersArray);
+			// runs the show letter in order to show user they guessed right
+			showLetter(guessedLetter, wordLettersArray, wordLettersArrayUI);
+			// removes that letter from the array
+			removeGuessedLetter(guessedLetter, wordLettersArray);
+			return true;
+		}	
+	} return false;
+}
+
+// function that takes the letter from the wordLettersArray and puts it in an array of already guessed letters
+function makeAlreadyGuessedArray(guessedLetter, wordLettersArray) {
+	for (var i = 0; i < wordLettersArray.length; i++) {
+		if (wordLettersArray[i] === guessedLetter) {
+			alreadyGuessedLettersArray.push(guessedLetter);
+			return alreadyGuessedLettersArray;
+		}
+	}	
+}
+
+// function that removes the guessed letter from the correct letters so that you can't keep guessing the same letter
+function removeGuessedLetter(guessedLetter, wordLettersArray) {
+	for (var i = 0; i < wordLettersArray.length; i++) {
+		if (wordLettersArray[i] === guessedLetter) {
+			wordLettersArray[i] = " ";
+		}
+	}
+}
+
+// returns true or false if a letter has already been guessed
+function alreadyGuessed(alreadyGuessedLettersArray, guessedLetter) {
+	for (var i = 0; i < alreadyGuessedLettersArray.length; i++) {
+		if (alreadyGuessedLettersArray[i] === guessedLetter) {
+			return true;
+		}
+	} return false;
+}
+
+function showLetter(guessedLetter, wordLettersArray, wordLettersArrayUI) {
+	for (var i = 0; i < wordLettersArray.length; i++) {
+		if (guessedLetter === wordLettersArray[i]) {
+			wordLettersArrayUI[i] = guessedLetter;
+		}
+	} return wordLettersArrayUI;
+}
+
+//checks if you have won!
+function youWin(wordLettersArray) {
+	for (var i = 0; i < wordLettersArray.length; i++) {
+		if (wordLettersArray[i] !== " ") {
+			return false;
+		}
+	} return true;	
+}
+
+// ask if you want to play another
+function playAnother() {
+	return confirm("Do you want to play again?");
+}
+
+// function that will get another word from the array
+function getWord(wordsArray, word) {
+	wordsArray = ["random", "words", "That", "I", "Use", "to", "Test", "everything", "a", "bunch", "of", "times", "to", "Check ", "for", "bugs"]
+	word = wordsArray[Math.floor(Math.random()*16)]; 
+	//lower case the word
+	word = word.toLowerCase();
+
+	//break up word into letters
+	for (var i = 0; i < word.length; i++) {
+		wordLettersArray[i] = word.charAt(i); 
+		console.log(wordLettersArray);
+	}	
+
+	// initialize word user will see as an array
+	wordLettersArrayUI = new Array(word.length);
+
+	// fills each spot with a blank spot so the user knows how many letters to guess!
+	wordLettersArrayUI.fill("__");
+
+	// takes away the commas
+	wordLettersArrayUI.join(" ");
+	return word;
+}
+
+
+
 
 
