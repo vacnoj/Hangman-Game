@@ -29,13 +29,25 @@ do {
 
 	// get a word from library
 	getWord(wordsArray, word);
+	alert(wordLettersArrayUI.join(" "));
 
 	do {
 		
-		alert(wordLettersArrayUI.join(" "));
+
 		//ask user to guess 
 		guessedLetter = prompt("Guess a letter!");
 		guessedLetter = guessedLetter.toLowerCase();
+
+		while (guessedLetter.length > 1) {
+			alert("Only type one letter at a time!");
+			guessedLetter = prompt("Guess a letter!");
+		}
+		
+		// if nothing was typed ask to do it again
+		while (guessedLetter === "") {
+			alert("nothing typed!");
+			guessedLetter = prompt("Guess a letter!");		
+		}
 
 
 		// document.getElementById("guessedLetter");
