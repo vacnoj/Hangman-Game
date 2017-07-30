@@ -160,13 +160,13 @@ function playAnother() {
 // function that will get another word from the array
 function getWord(wordsArray) {
 	wordsArray = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the 4th", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"]
-	word = wordsArray[Math.floor(Math.random()*16)]; 
+	word = wordsArray[Math.floor(Math.random() * wordsArray.length)]; 
 	//lower case the word
-	word = word.toLowerCase();
+	// word = word.toLowerCase();
 
 	//break up word into letters
 	for (var i = 0; i < word.length; i++) {
-		wordLettersArray[i] = word.charAt(i); 
+		wordLettersArray[i] = word.charAt(i).toLowerCase(); 
 		console.log(wordLettersArray);
 	}	
 
@@ -174,7 +174,7 @@ function getWord(wordsArray) {
 	wordLettersArrayUI = new Array(word.length);
 
 	// fills each spot with a blank spot so the user knows how many letters to guess!
-	wordLettersArrayUI.fill("__");
+	wordLettersArrayUI.fill("___");
 
 	// // takes away the commas
 	// wordLettersArrayUI.join("*");
