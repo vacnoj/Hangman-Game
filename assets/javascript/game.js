@@ -5,7 +5,7 @@ livesUI = document.getElementById("lives");
 // set a life variable
 var lives = 3;
 
-livesUI.innerHTML = lives;
+// livesUI.innerHTML = lives;
 
 // print number of lives
 console.log(`You have ${lives} left!`);
@@ -66,7 +66,7 @@ do {
 			console.log("yay");
 			console.log(wordLettersArray);
 			console.log(alreadyGuessedLettersArray);
-			alert(wordLettersArrayUI.join("  "));
+			$("#wordLettersArrayUI").html(wordLettersArrayUI.join("  "));
 			if (youWin(wordLettersArray)) {
 				alert("You Win!");
 				break;
