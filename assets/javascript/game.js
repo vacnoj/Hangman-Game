@@ -1,3 +1,5 @@
+$(document).ready(function() {
+
 console.log('hi');
 
 livesUI = document.getElementById("lives");
@@ -37,17 +39,20 @@ do {
 
 		//ask user to guess 
 		guessedLetter = prompt("Guess a letter!");
-		guessedLetter = guessedLetter.toLowerCase();
+		guessedLetter = guessedLetter.toUpperCase();
 
-		while (guessedLetter.length > 1) {
-			alert("Only type one letter at a time!");
-			guessedLetter = prompt("Guess a letter!");
-		}
+		
 		
 		// if nothing was typed ask to do it again
 		while (guessedLetter === "") {
 			alert("nothing typed!");
-			guessedLetter = prompt("Guess a letter!");		
+			guessedLetter = prompt("Guess a letter!");
+			guessedLetter = guessedLetter.toUpperCase();	
+		}
+		while (guessedLetter.length > 1) {
+			alert("Only type one letter at a time!");
+			guessedLetter = prompt("Guess a letter!");
+			guessedLetter = guessedLetter.toUpperCase();
 		}
 
 
@@ -59,6 +64,7 @@ do {
 		while (alreadyGuessed(alreadyGuessedLettersArray, guessedLetter)) {
 			alert(`You already guessed ${guessedLetter}!`);
 			guessedLetter = prompt("Guess a letter!");
+			guessedLetter = guessedLetter.toUpperCase();
 		}
 
 		// if you guess right!
@@ -159,14 +165,22 @@ function playAnother() {
 
 // function that will get another word from the array
 function getWord(wordsArray) {
-	wordsArray = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the 4th", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"]
+	var wordsArrayLeauge;
+	var wordsArrayAnimals;
+	$("#animal").click(function() {
+		wordsArrayAnimals = ["Dog", "Cat", "Bear"]
+		wordsArray = wordsArrayAnimals;
+	});
+	wordsArrayLeauge = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the 4th", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"]
+	wordsArray = wordsArrayLeauge;
+	var wordsArraySports = ["Soccer", "Baseball"]
+	var wordsArrayAnimals = ["Dog", "Cat", "Bear"]
 	word = wordsArray[Math.floor(Math.random() * wordsArray.length)]; 
-	//lower case the word
-	// word = word.toLowerCase();
+
 
 	//break up word into letters
 	for (var i = 0; i < word.length; i++) {
-		wordLettersArray[i] = word.charAt(i).toLowerCase(); 
+		wordLettersArray[i] = word.charAt(i).toUpperCase(); 
 		console.log(wordLettersArray);
 	}	
 
@@ -180,7 +194,7 @@ function getWord(wordsArray) {
 	// wordLettersArrayUI.join("*");
 	return wordLettersArray;
 }
-
+});
 
 
 
