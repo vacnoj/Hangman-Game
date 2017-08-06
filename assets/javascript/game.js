@@ -2,12 +2,9 @@ $(document).ready(function() {
 
 console.log('hi');
 
-livesUI = document.getElementById("lives");
-
 // set a life variable
-var lives = 3;
+var lives = 7;
 
-// livesUI.innerHTML = lives;
 
 // print number of lives
 console.log(`You have ${lives} left!`);
@@ -24,78 +21,95 @@ var wordLettersArray = [];
 // an array of already guessed letters
 var alreadyGuessedLettersArray = [];
 
+// if user guesses right, it goes to this array
+var guessedRightLettersArray = [];
+
+// if guessed wrong it will go to this array
+var guessedWrongLettersArray = [];
+
 // array that shows user what letters they got right
 var wordLettersArrayUI = [];
 
-do {
+var askUser = $("#prompt");
 
-	// get a word from library
-	getWord(wordsArray, word);
-	// alert(word);
-	alert(wordLettersArrayUI.join(" "));
+// get a word from library
+getWord(wordsArray, word);
+// display it on the screen
+$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
+askUser.text("Guess a Letter!");
 
-	do {
-		
+// set key up to guessedLetter
+$(document).keyup(function(e) {
+	
+	guessedLetter = e.key;
+	guessedLetter = guessedLetter.toUpperCase();
+	askUser.text("Guess a Letter!");
 
-		//ask user to guess 
-		guessedLetter = prompt("Guess a letter!");
-		guessedLetter = guessedLetter.toUpperCase();
-
-		
-		
-		// if nothing was typed ask to do it again
-		while (guessedLetter === "") {
-			alert("nothing typed!");
-			guessedLetter = prompt("Guess a letter!");
-			guessedLetter = guessedLetter.toUpperCase();	
+	if (alreadyGuessed(alreadyGuessedLettersArray, guessedLetter)) {
+		$("#prompt").text("You already guessed that!");
+	} else if (containsLetter(guessedLetter, wordLettersArray)) {
+		$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
+		if(youWin(wordLettersArray)) {
+			$("#wordLettersArrayUI").text("YOU WIN!");
+			$("#alreadyGuessedLettersArrayUI").text("Play Again?");
 		}
-		while (guessedLetter.length > 1) {
-			alert("Only type one letter at a time!");
-			guessedLetter = prompt("Guess a letter!");
-			guessedLetter = guessedLetter.toUpperCase();
-		}
+	} else {
+		makeAlreadyGuessedArray(guessedLetter, wordLettersArray);
+		$("#alreadyGuessedLettersArrayUI").html(guessedWrongLettersArray.join(" "));
+		lives--;
+	}
+
+	switch(lives) {
+		case 6:
+			$(".hangman").attr("src", "assets/images/head.png");
+			break;
+		case 5:
+			$(".hangman").attr("src", "assets/images/body.png");
+			break;
+		case 4:
+			$(".hangman").attr("src", "assets/images/leftArm.png");
+			break;
+		case 3:
+			$(".hangman").attr("src", "assets/images/rightArm.png");
+			break;
+		case 2:
+			$(".hangman").attr("src", "assets/images/leftLeg.png");
+			break;
+		case 1:
+			$(".hangman").attr("src", "assets/images/rightLeg.png");
+			break;
+		case 0:
+			$(".hangman").attr("src", "assets/images/dead.png");
+			$("#wordLettersArrayUI").text("GAME OVER");
+			$("#alreadyGuessedLettersArrayUI").text("Play Again?");
+			break;
+	}
 
 
-		// document.getElementById("guessedLetter");
-		// document.onkeyup = function(event) {
-		// 	guessedLetter = event.key;
-		// };
+});	
 
-		while (alreadyGuessed(alreadyGuessedLettersArray, guessedLetter)) {
-			alert(`You already guessed ${guessedLetter}!`);
-			guessedLetter = prompt("Guess a letter!");
-			guessedLetter = guessedLetter.toUpperCase();
-		}
-
-		// if you guess right!
-		if (containsLetter(guessedLetter, wordLettersArray)) {
-			console.log("yay");
-			console.log(wordLettersArray);
-			console.log(alreadyGuessedLettersArray);
-			$("#wordLettersArrayUI").html(wordLettersArrayUI.join("  "));
-			if (youWin(wordLettersArray)) {
-				alert("You Win!");
-				break;
-			}
-
-		// if you guess wrong
-		} else {	
-			alert("wrong");
-			lives -= 1;
-			alert(`${lives} lives left!`);
-			alert(wordLettersArrayUI.join("  "));
-			if (lives === 0) {
-				alert("Loser!");
-				alert(word);
-				break;
-			}
-		} 
-	} while (lives > 0);
-	alreadyGuessedLettersArray = [];
-	lives = 3;
+$("#playAgain").click(function() {
 	wordLettersArray = [];
-} while (playAnother() === true);
 
+	alreadyGuessedLettersArray = [];
+	
+	guessedRightLettersArray = [];
+	
+	guessedWrongLettersArray = [];
+	
+	wordLettersArrayUI = [];
+	
+
+	getWord(wordsArray, word);
+
+	$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
+	
+	$("#alreadyGuessedLettersArrayUI").html("");
+
+	askUser.text("Guess a Letter!");
+
+
+});
 
 // returns true or false if guessedLetter is in wordLettersArray
 function containsLetter(guessedLetter, wordLettersArray) {
@@ -117,10 +131,14 @@ function containsLetter(guessedLetter, wordLettersArray) {
 function makeAlreadyGuessedArray(guessedLetter, wordLettersArray) {
 	for (var i = 0; i < wordLettersArray.length; i++) {
 		if (wordLettersArray[i] === guessedLetter) {
+			guessedRightLettersArray.push(guessedLetter);
 			alreadyGuessedLettersArray.push(guessedLetter);
 			return alreadyGuessedLettersArray;
-		}
-	}	
+		} 
+	}
+		guessedWrongLettersArray.push(guessedLetter);
+		alreadyGuessedLettersArray.push(guessedLetter);
+		return alreadyGuessedLettersArray;
 }
 
 // function that removes the guessed letter from the correct letters so that you can't keep guessing the same letter
@@ -158,23 +176,19 @@ function youWin(wordLettersArray) {
 	} return true;	
 }
 
-// ask if you want to play another
-function playAnother() {
-	return confirm("Do you want to play again?");
-}
 
 // function that will get another word from the array
 function getWord(wordsArray) {
 	var wordsArrayLeauge;
 	var wordsArrayAnimals;
 	$("#animal").click(function() {
-		wordsArrayAnimals = ["Dog", "Cat", "Bear"]
+		wordsArrayAnimals = ["Dog", "Cat", "Bear"];
 		wordsArray = wordsArrayAnimals;
 	});
-	wordsArrayLeauge = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the 4th", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"]
+	wordsArrayLeauge = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the 4th", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"];
 	wordsArray = wordsArrayLeauge;
-	var wordsArraySports = ["Soccer", "Baseball"]
-	var wordsArrayAnimals = ["Dog", "Cat", "Bear"]
+	var wordsArraySports = ["Soccer", "Baseball"];
+	wordsArrayAnimals = ["Dog", "Cat", "Bear"];
 	word = wordsArray[Math.floor(Math.random() * wordsArray.length)]; 
 
 

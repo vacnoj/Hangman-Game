@@ -2,3 +2,32 @@
 	color: blue;
 }
 
+#hangingpost {
+	position: relative;
+	height: 400px;
+	width: 400px;
+}
+.hangman {
+	position: absolute;
+    top: 0;
+    left: 40%;
+    height: 400px;
+    width: 400px;
+
+}
+
+@media screen and (max-width: 400px) {
+#hangingpost {
+	position: relative;
+	height: 200px;
+	width: 200px;
+}
+.hangman {
+	position: absolute;
+    top: 0;
+    left: 40%;
+    height: 200px;
+    width: 200px;
+
+}
+}
