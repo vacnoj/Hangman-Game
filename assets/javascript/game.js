@@ -30,6 +30,7 @@ var guessedWrongLettersArray = [];
 // array that shows user what letters they got right
 var wordLettersArrayUI = [];
 
+// sets the prompt area
 var askUser = $("#prompt");
 
 // get a word from library
@@ -38,6 +39,36 @@ getWord(wordsArray, word);
 $("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
 askUser.text("Guess a Letter!");
 
+$("#animals").click(function() {
+	$("#animals").addClass("active");
+	$("#lol").removeClass("active");
+	$("#sports").removeClass("active");
+	playAgain();
+	getWord(wordsArray, word);
+	$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
+	askUser.text("Guess a Letter!");
+});
+
+$("#lol").click(function() {
+	$("#lol").addClass("active");
+	$("#animals").removeClass("active");
+	$("#sports").removeClass("active");
+	playAgain();
+	getWord(wordsArray, word);
+	$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
+	askUser.text("Guess a Letter!");
+});
+
+$("#sports").click(function() {
+	$("#sports").addClass("active");
+	$("#lol").removeClass("active");
+	$("#animals").removeClass("active");
+	playAgain();
+	getWord(wordsArray, word);
+	$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
+	askUser.text("Guess a Letter!");
+});
+
 // set key up to guessedLetter
 $(document).keyup(function(e) {
 	
@@ -45,8 +76,13 @@ $(document).keyup(function(e) {
 	guessedLetter = guessedLetter.toUpperCase();
 	askUser.text("Guess a Letter!");
 
+	if(youWin(wordLettersArray)) {
+			$("#wordLettersArrayUI").text("YOU WIN!");
+			$("#alreadyGuessedLettersArrayUI").text("Play Again?");
+	}
+
 	if (alreadyGuessed(alreadyGuessedLettersArray, guessedLetter)) {
-		$("#prompt").text("You already guessed that!");
+		$("#prompt").text(`You already guessed ${guessedLetter}!`);
 	} else if (containsLetter(guessedLetter, wordLettersArray)) {
 		$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
 		if(youWin(wordLettersArray)) {
@@ -91,28 +127,7 @@ $(document).keyup(function(e) {
 });	
 
 $("#playAgain").click(function() {
-	$(".hangman").attr("src", "assets/images/empty.png");
-
-	wordLettersArray = [];
-
-	alreadyGuessedLettersArray = [];
-	
-	guessedRightLettersArray = [];
-	
-	guessedWrongLettersArray = [];
-	
-	wordLettersArrayUI = [];
-	
-
-	getWord(wordsArray, word);
-
-	$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
-	
-	$("#alreadyGuessedLettersArrayUI").html("");
-
-	askUser.text("Guess a Letter!");
-
-	lives=7;
+	playAgain();
 });
 
 // returns true or false if guessedLetter is in wordLettersArray
@@ -185,16 +200,18 @@ function youWin(wordLettersArray) {
 function getWord(wordsArray) {
 	var wordsArrayLeauge;
 	var wordsArrayAnimals;
-	$("#animal").click(function() {
-		wordsArrayAnimals = ["Dog", "Cat", "Bear"];
-		wordsArray = wordsArrayAnimals;
-	});
+	var wordsArraySports;
+	wordsArraySports = ["Soccer", "Football", "Hockey", "Lacross", "Field Hockey", "Baseball"];
+	wordsArrayAnimals = ["Dog", "Cat", "Bear", "Moose", "Donkey", "Cow", "Dragon"];
 	wordsArrayLeauge = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the 4th", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"];
-	wordsArray = wordsArrayLeauge;
-	var wordsArraySports = ["Soccer", "Baseball"];
-	wordsArrayAnimals = ["Dog", "Cat", "Bear"];
+	if ($("#lol").hasClass("active")) {
+		wordsArray = wordsArrayLeauge;
+	} else if ($("#animals").hasClass("active")) {
+		wordsArray = wordsArrayAnimals;
+	} else if ($("#sports").hasClass("active")) {
+		wordsArray = wordsArraySports;
+	}
 	word = wordsArray[Math.floor(Math.random() * wordsArray.length)]; 
-
 
 	//break up word into letters
 	for (var i = 0; i < word.length; i++) {
@@ -211,6 +228,20 @@ function getWord(wordsArray) {
 	// // takes away the commas
 	// wordLettersArrayUI.join("*");
 	return wordLettersArray;
+}
+
+function playAgain() {
+	$(".hangman").attr("src", "assets/images/empty.png");
+	wordLettersArray = [];
+	alreadyGuessedLettersArray = [];
+	guessedRightLettersArray = [];
+	guessedWrongLettersArray = [];
+	wordLettersArrayUI = [];
+	getWord(wordsArray, word);
+	$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
+	$("#alreadyGuessedLettersArrayUI").html("");
+	askUser.text("Guess a Letter!");
+	lives=7;
 }
 });
 
