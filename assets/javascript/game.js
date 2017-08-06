@@ -60,6 +60,8 @@ $(document).keyup(function(e) {
 	}
 
 	switch(lives) {
+		case 7:
+			$(".hangman").attr("src", "assets/images/empty.png");
 		case 6:
 			$(".hangman").attr("src", "assets/images/head.png");
 			break;
@@ -89,6 +91,8 @@ $(document).keyup(function(e) {
 });	
 
 $("#playAgain").click(function() {
+	$(".hangman").attr("src", "assets/images/empty.png");
+
 	wordLettersArray = [];
 
 	alreadyGuessedLettersArray = [];
@@ -108,7 +112,7 @@ $("#playAgain").click(function() {
 
 	askUser.text("Guess a Letter!");
 
-
+	lives=7;
 });
 
 // returns true or false if guessedLetter is in wordLettersArray
