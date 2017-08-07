@@ -71,6 +71,10 @@ $(document).keyup(function(e) {
 		guessedLetter = guessedLetter.toUpperCase();
 		askUser.text("Guess a Letter!");
 
+		if (!guessedLetter.match(/[a-z]/i)) {
+			$("#prompt").text("Not a Letter");
+		}
+
 		if(youWin(wordLettersArray)) {
 				$("#wordLettersArrayUI").text("YOU WIN!");
 				$("#alreadyGuessedLettersArrayUI").text("Play Again?");
@@ -207,7 +211,7 @@ function getWord(wordsArray) {
 	var wordsArraySports;
 	wordsArraySports = ["Soccer", "Football", "Hockey", "Lacross", "Field Hockey", "Baseball"];
 	wordsArrayAnimals = ["Dog", "Cat", "Bear", "Moose", "Donkey", "Cow", "Dragon"];
-	wordsArrayLeauge = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the 4th", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"];
+	wordsArrayLeauge = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the forth", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"];
 	if ($("#lol").hasClass("active")) {
 		wordsArray = wordsArrayLeauge;
 	} else if ($("#animals").hasClass("active")) {
