@@ -33,6 +33,9 @@ var wordLettersArrayUI = [];
 // sets the prompt area
 var askUser = $("#prompt");
 
+// game over true/false
+var gameOver=false;
+
 // get a word from library
 getWord(wordsArray, word);
 // display it on the screen
@@ -72,57 +75,65 @@ $("#sports").click(function() {
 // set key up to guessedLetter
 $(document).keyup(function(e) {
 	
-	guessedLetter = e.key;
-	guessedLetter = guessedLetter.toUpperCase();
-	askUser.text("Guess a Letter!");
+	if(gameOver===false) {
+		guessedLetter = e.key;
+		guessedLetter = guessedLetter.toUpperCase();
+		askUser.text("Guess a Letter!");
 
-	if(youWin(wordLettersArray)) {
-			$("#wordLettersArrayUI").text("YOU WIN!");
-			$("#alreadyGuessedLettersArrayUI").text("Play Again?");
-	}
-
-	if (alreadyGuessed(alreadyGuessedLettersArray, guessedLetter)) {
-		$("#prompt").text(`You already guessed ${guessedLetter}!`);
-	} else if (containsLetter(guessedLetter, wordLettersArray)) {
-		$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
 		if(youWin(wordLettersArray)) {
-			$("#wordLettersArrayUI").text("YOU WIN!");
-			$("#alreadyGuessedLettersArrayUI").text("Play Again?");
+				$("#wordLettersArrayUI").text("YOU WIN!");
+				$("#alreadyGuessedLettersArrayUI").text("Play Again?");
+		}
+
+		if (alreadyGuessed(alreadyGuessedLettersArray, guessedLetter)) {
+			$("#prompt").text(`You already guessed ${guessedLetter}!`);
+		} else if (containsLetter(guessedLetter, wordLettersArray)) {
+			$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
+			if(youWin(wordLettersArray)) {
+				$("#prompt").text("YOU WIN!");
+				$("#wordLettersArrayUI").text(word);
+				$("#alreadyGuessedLettersArrayUI").text("Play Again?");
+			}
+		} else {
+			makeAlreadyGuessedArray(guessedLetter, wordLettersArray);
+			$("#alreadyGuessedLettersArrayUI").html(guessedWrongLettersArray.join(" "));
+			lives--;
+		}
+
+		switch(lives) {
+			case 7:
+				$(".hangman").attr("src", "assets/images/empty.png");
+				break;
+			case 6:
+				$(".hangman").attr("src", "assets/images/head.png");
+				break;
+			case 5:
+				$(".hangman").attr("src", "assets/images/body.png");
+				break;
+			case 4:
+				$(".hangman").attr("src", "assets/images/leftArm.png");
+				break;
+			case 3:
+				$(".hangman").attr("src", "assets/images/rightArm.png");
+				break;
+			case 2:
+				$(".hangman").attr("src", "assets/images/leftLeg.png");
+				break;
+			case 1:
+				$(".hangman").attr("src", "assets/images/rightLeg.png");
+				break;
+			case 0:
+				$(".hangman").attr("src", "assets/images/dead.png");
+				$("#wordLettersArrayUI").text(word);
+				$("#prompt").text("LOSER!");
+				gameOver=true;
+				$("#alreadyGuessedLettersArrayUI").text("Play Again?");
+				break;
 		}
 	} else {
-		makeAlreadyGuessedArray(guessedLetter, wordLettersArray);
-		$("#alreadyGuessedLettersArrayUI").html(guessedWrongLettersArray.join(" "));
-		lives--;
+		$("#wordLettersArrayUI").text("GAME OVER");
+		$("#alreadyGuessedLettersArrayUI").text("Play Again?");
 	}
-
-	switch(lives) {
-		case 7:
-			$(".hangman").attr("src", "assets/images/empty.png");
-		case 6:
-			$(".hangman").attr("src", "assets/images/head.png");
-			break;
-		case 5:
-			$(".hangman").attr("src", "assets/images/body.png");
-			break;
-		case 4:
-			$(".hangman").attr("src", "assets/images/leftArm.png");
-			break;
-		case 3:
-			$(".hangman").attr("src", "assets/images/rightArm.png");
-			break;
-		case 2:
-			$(".hangman").attr("src", "assets/images/leftLeg.png");
-			break;
-		case 1:
-			$(".hangman").attr("src", "assets/images/rightLeg.png");
-			break;
-		case 0:
-			$(".hangman").attr("src", "assets/images/dead.png");
-			$("#wordLettersArrayUI").text("GAME OVER");
-			$("#alreadyGuessedLettersArrayUI").text("Play Again?");
-			break;
-	}
-
 
 });	
 
@@ -242,6 +253,7 @@ function playAgain() {
 	$("#alreadyGuessedLettersArrayUI").html("");
 	askUser.text("Guess a Letter!");
 	lives=7;
+	gameOver=false;
 }
 });
 
