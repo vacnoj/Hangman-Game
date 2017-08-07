@@ -47,9 +47,6 @@ $("#animals").click(function() {
 	$("#lol").removeClass("active");
 	$("#sports").removeClass("active");
 	playAgain();
-	getWord(wordsArray, word);
-	$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
-	askUser.text("Guess a Letter!");
 });
 
 $("#lol").click(function() {
@@ -57,9 +54,6 @@ $("#lol").click(function() {
 	$("#animals").removeClass("active");
 	$("#sports").removeClass("active");
 	playAgain();
-	getWord(wordsArray, word);
-	$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
-	askUser.text("Guess a Letter!");
 });
 
 $("#sports").click(function() {
@@ -67,9 +61,6 @@ $("#sports").click(function() {
 	$("#lol").removeClass("active");
 	$("#animals").removeClass("active");
 	playAgain();
-	getWord(wordsArray, word);
-	$("#wordLettersArrayUI").html(wordLettersArrayUI.join(" "));
-	askUser.text("Guess a Letter!");
 });
 
 // set key up to guessedLetter
@@ -93,6 +84,7 @@ $(document).keyup(function(e) {
 				$("#prompt").text("YOU WIN!");
 				$("#wordLettersArrayUI").text(word);
 				$("#alreadyGuessedLettersArrayUI").text("Play Again?");
+				$("#prompt2").hide();
 			}
 		} else {
 			makeAlreadyGuessedArray(guessedLetter, wordLettersArray);
@@ -122,18 +114,19 @@ $(document).keyup(function(e) {
 			case 1:
 				$(".hangman").attr("src", "assets/images/rightLeg.png");
 				break;
-			case 0:
+			default:
 				$(".hangman").attr("src", "assets/images/dead.png");
+				$("#prompt2").hide();
 				$("#wordLettersArrayUI").text(word);
 				$("#prompt").text("LOSER!");
 				gameOver=true;
 				$("#alreadyGuessedLettersArrayUI").text("Play Again?");
 				break;
 		}
-	} else {
-		$("#wordLettersArrayUI").text("GAME OVER");
-		$("#alreadyGuessedLettersArrayUI").text("Play Again?");
-	}
+	}// else {
+	// 	$("#wordLettersArrayUI").text("GAME OVER");
+	// 	$("#alreadyGuessedLettersArrayUI").text("Play Again?");
+	// }
 
 });	
 
@@ -254,6 +247,7 @@ function playAgain() {
 	askUser.text("Guess a Letter!");
 	lives=7;
 	gameOver=false;
+	$("#prompt2").show();
 }
 });
 
