@@ -209,7 +209,7 @@ function getWord(wordsArray) {
 	var wordsArrayLeauge;
 	var wordsArrayAnimals;
 	var wordsArraySports;
-	wordsArraySports = ["Soccer", "Football", "Hockey", "Lacross", "Field Hockey", "Baseball"];
+	wordsArraySports = ["Soccer", "Football", "Hockey", "Lacross", "Field Hockey", "Baseball", "Basketball"];
 	wordsArrayAnimals = ["Dog", "Cat", "Bear", "Moose", "Donkey", "Cow", "Dragon"];
 	wordsArrayLeauge = ["Tryndamere", "Teemo", "Caitlyn", "Oriana", "Twitch", "Morgana", "Jarvan the forth", "Talon", "LeBlanc", "Tristana", "Volibear", "Veigar", "Fiddle Sticks", "Zyra", "Viktor", "Lux"];
 	if ($("#lol").hasClass("active")) {
